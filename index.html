@@ -26,16 +26,28 @@ body{background:#111;color:#ddd;font-family:sans-serif;font-size:13px}
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
   <select id="rSel" style="flex:1;min-width:140px;height:34px;padding:0 10px;background:#1e1e1e;color:#ddd;border:1px solid #444;border-radius:6px;font-size:13px"></select>
   <select id="mSel" style="flex:1;min-width:140px;height:34px;padding:0 10px;background:#1e1e1e;color:#ddd;border:1px solid #444;border-radius:6px;font-size:13px">
-    <option value="com" selected>COM main</option><option value="pil">PIL main</option><option value="eng">ENG main</option>
-    <option value="hun">HUN main</option><option value="smu">SMU main</option><option value="lea">LEA main</option>
-    <option value="esp">ESP main</option><option value="sli">SLI main</option>
-    <option value="med">MED main</option><option value="sci">SCI main</option>
+    <option value="com" selected>Combat</option><option value="pil">Piloting</option><option value="eng">Engineering</option>
+    <option value="hun">Bounty Hunting</option><option value="smu">Smuggling</option><option value="lea">Leadership</option>
+    <option value="esp">Espionage</option><option value="sli">Slicing</option>
+    <option value="med">Medical</option><option value="sci">Science</option>
   </select>
   <select id="fSel" style="flex:1;min-width:140px;height:34px;padding:0 10px;background:#1e1e1e;color:#ddd;border:1px solid #444;border-radius:6px;font-size:13px">
     <option value="none">No force subclass</option>
     <option value="jug">Guardian / Juggernaut (+70com +30esp +20pil)</option>
     <option value="ass">Sentinel / Assassin (+50smu +40com +30sli)</option>
     <option value="sor">Consular / Sorcerer (+50lea +40com +30eng)</option>
+  </select>
+  <select id="lSel" style="flex:1;min-width:140px;height:34px;padding:0 10px;background:#1e1e1e;color:#ddd;border:1px solid #444;border-radius:6px;font-size:13px;display:none">
+    <option value="none">Leadership subclass...</option>
+    <option value="com">Combat (+30)</option>
+    <option value="pil">Piloting (+30)</option>
+    <option value="eng">Engineering (+30)</option>
+    <option value="hun">Bounty Hunting (+30)</option>
+    <option value="smu">Smuggling (+30)</option>
+    <option value="esp">Espionage (+30)</option>
+    <option value="sli">Slicing (+30)</option>
+    <option value="med">Medical (+30)</option>
+    <option value="sci">Science (+30)</option>
   </select>
 </div>
 <div id="sBar" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px"></div>
@@ -229,12 +241,18 @@ function render(){
   const race=R[rn];if(!race)return;
   const base=race.levels[mn]||{};
   const bonus=FB[fc]||{};
+  const lSel=document.getElementById('lSel');
+  // Show leadership subclass dropdown only when LEA is main
+  lSel.style.display=mn==='lea'?'':'none';
+  const leaSub=mn==='lea'?lSel.value:'none';
   const fin={};
   SK.forEach(k=>{
     const baseVal=(base[k]||0)+(bonus[k]||0);
     // Apply stat modifier bonuses from CLASS_STAT_BONUS table
     const statBonus=Object.entries(CLASS_STAT_BONUS[k]||{}).reduce((acc,[stat,mult])=>acc+(statMods[stat]||0)*mult,0);
-    fin[k]=Math.min(150,baseVal+statBonus);
+    // Leadership subclass: +30 to chosen subclass (still capped at 150)
+    const leaBonus=(leaSub!=='none'&&leaSub===k)?30:0;
+    fin[k]=Math.min(150,baseVal+statBonus+leaBonus);
   });
   const total=SK.reduce((a,k)=>a+fin[k],0);
   const stats=['str','dex','con','int','wis','cha'];
@@ -289,6 +307,7 @@ function render(){
 rSel.addEventListener('change',render);
 mSel.addEventListener('change',render);
 fSel.addEventListener('change',render);
+document.getElementById('lSel').addEventListener('change',render);
 render();
 </script>
 </div>
