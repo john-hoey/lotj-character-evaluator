@@ -323,5 +323,26 @@ render();
   <br>
   <span style="font-size:11px;color:#3a3a3a">LOTJ Character Evaluator by Bagz</span>
 </div>
+<!-- Welcome Modal -->
+<div id="welcome-overlay" style="display:flex;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center">
+  <div style="background:#1a1a1a;border:1px solid #444;border-radius:10px;padding:28px 32px;max-width:500px;width:90%;position:relative;text-align:center">
+    <h2 style="font-size:16px;font-weight:700;color:#ddd;margin-bottom:16px;letter-spacing:.04em;text-transform:uppercase">LOTJ Character Evaluator</h2>
+    <p style="font-size:13px;color:#bbb;line-height:1.8;margin-bottom:18px">
+      Welcome to my little character evaluator for <strong style="color:#ddd">Legends of the Jedi</strong> character creation brainstorms!
+      Just about everything you see is clickable and will display the associated help file when clicked.
+      Have fun!<br><span style="color:#666">(or don't lol, your call)</span>
+    </p>
+    <p style="font-size:13px;color:#bbb;line-height:1.8;margin-bottom:22px">
+      Please report any bugs or share any ideas you have for improvement with me.
+      You can find me <strong style="color:#378ADD">@bagziwankenobi</strong> on Discord.
+    </p>
+    <p style="font-size:14px;color:#EF9F27;font-style:italic;margin-bottom:24px">May the force be with us!</p>
+    <button onclick="document.getElementById('welcome-overlay').style.display='none'"
+      style="background:#378ADD;color:#fff;border:none;border-radius:6px;padding:10px 32px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.04em"
+      onmouseenter="this.style.background='#5aabff'" onmouseleave="this.style.background='#378ADD'">
+      Let's go!
+    </button>
+  </div>
+</div>
 </body>
 </html>
